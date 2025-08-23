@@ -1,38 +1,1331 @@
 .App {
   text-align: center;
+  padding: 8px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-.App-logo {
-  height: 40vmin;
+
+
+.App::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.05"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.05"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.03"/><circle cx="20" cy="80" r="0.5" fill="white" opacity="0.03"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App-header {
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+h1 {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* This style is now handled in the header-with-ads section at the end of the file */
+
+h1::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+  margin: 8px auto;
+  border-radius: 2px;
+}
+
+.main-content {
+  display: flex;
+  gap: 0;
+  align-items: flex-start;
+  justify-content: center;
+  flex: 1;
+  min-height: 0;
+  padding: 0 8px;
+  position: relative;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.left-toolbar {
+  flex-shrink: 0;
+  width: 280px;
+  max-width: 280px;
+  min-width: 280px;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  margin-right: 16px;
+}
+
+.right-toolbar {
+  flex-shrink: 0;
+  width: 280px;
+  max-width: 280px;
+  min-width: 280px;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
+  margin-left: 16px;
+}
+
+.toolbar {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 10;
+  height: fit-content;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.toolbar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.file-group {
+  position: relative;
+}
+
+.toolbar-group:last-child {
+  border-bottom: none;
+}
+
+.toolbar-group span {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+.team-button:hover {
+  opacity: 0.9;
+  transform: translateY(-3px) scale(1.02);
+}
+
+.team-button.selected:hover {
+  opacity: 1;
+  transform: translateY(-3px) scale(1.1);
+}
+
+button:active {
+  transform: translateY(-1px);
+}
+
+button.secondary {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #495057;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+button.secondary:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+button.secondary.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+button.secondary.active:hover {
+  background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+button.danger {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+}
+
+button.danger:hover {
+  background: linear-gradient(135deg, #ff5252 0%, #e53935 100%);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
+}
+
+.team-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.team-button {
+  opacity: 0.9;
+  border: 2px solid transparent;
+  position: relative;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 100px;
+  margin: 4px 6px 4px 0;
+}
+
+.team-button * {
+  color: white !important;
+}
+
+.team-button.team-home,
+.team-button.team-home .team-name,
+.team-button.team-home .team-icon {
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%) !important;
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+}
+
+.team-button.team-home.selected,
+.team-button.team-home.selected .team-name,
+.team-button.team-home.selected .team-icon {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.team-button.team-away,
+.team-button.team-away .team-name,
+.team-button.team-away .team-icon {
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 100%) !important;
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+}
+
+.team-button.team-away.selected,
+.team-button.team-away.selected .team-name,
+.team-button.team-away.selected .team-icon {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%) !important;
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.team-button:hover {
+  opacity: 1;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25) !important;
+}
+
+.team-button.selected {
+  opacity: 1;
+  transform: scale(1.05);
+  border: 3px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(255, 255, 255, 0.5) !important;
+  font-weight: 700;
+}
+
+.team-button.selected:hover {
+  transform: translateY(-2px) scale(1.08);
+}
+
+.team-icon {
+  font-size: 18px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.team-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.team-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.team-color-indicator {
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.team-button.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.team-button.disabled .team-icon,
+.team-button.disabled .team-name {
+  opacity: 0.5;
+}
+
+.team-button.selected::after {
+  content: '⚽';
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
   color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  border: 2px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: checkmarkPop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 10;
 }
 
-.App-link {
-  color: #61dafb;
+@keyframes checkmarkPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
-@keyframes App-logo-spin {
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mode-button.active {
+  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(255, 216, 155, 0.4) !important;
+}
+
+.mode-button.active:hover {
+  background: linear-gradient(135deg, #ffcc70 0%, #1e3c72 100%) !important;
+  box-shadow: 0 8px 25px rgba(255, 216, 155, 0.6) !important;
+}
+
+.formation-button {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  min-width: 50px;
+}
+
+.formation-button:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6) !important;
+  transform: translateY(-2px);
+}
+
+.formation-button:disabled {
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%) !important;
+  box-shadow: 0 2px 6px rgba(156, 163, 175, 0.3) !important;
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: none;
+}
+
+.formation-button:disabled:hover {
+  transform: none;
+  box-shadow: 0 2px 6px rgba(156, 163, 175, 0.3) !important;
+}
+
+.template-select {
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #495057;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 80px;
+  width: 100%;
+  max-width: 120px;
+}
+
+.template-select:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.template-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.template-select {
+  width: 100%;
+  max-width: 120px;
+  min-width: 80px;
+  flex: 1;
+}
+
+.template-select option {
+  background: white;
+  color: #374151;
+  padding: 8px;
+}
+
+.template-select option:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+.template-manager {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  animation: slideIn 0.3s ease-out;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  margin-top: 4px;
+  box-sizing: border-box;
+  overflow: hidden;
+  min-width: 0;
+}
+
+@keyframes slideIn {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(-10px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.template-delete-select {
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid #fecaca;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #dc2626;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-width: 80px;
+  width: 100%;
+  max-width: 120px;
+  flex: 1;
+}
+
+.template-delete-select:hover {
+  background: linear-gradient(135deg, #fecaca 0%, #f87171 100%);
+  color: white;
+  box-shadow: 0 8px 25px rgba(220, 38, 38, 0.25);
+  transform: translateY(-2px);
+}
+
+.template-delete-select:focus {
+  outline: none;
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+
+
+.template-delete-select option {
+  background: white;
+  color: #374151;
+  padding: 8px;
+}
+
+.template-delete-select option:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .template-manager {
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+  
+  .template-select,
+  .template-delete-select {
+    min-width: 80px;
+    width: 100%;
+  }
+}
+
+.soccer-field-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+canvas {
+  background: linear-gradient(135deg, #2dd4bf 0%, #059669 100%);
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(0, 0, 0, 0.15);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 1200px;
+  height: 780px;
+  max-width: calc(100vw - 600px);
+  max-height: 80vh;
+}
+
+canvas:hover {
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35), 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Add responsive design */
+@media (max-width: 1200px) {
+  canvas {
+    max-width: calc(100vw - 400px);
+    max-height: 70vh;
+  }
+}
+
+@media (max-width: 1024px) {
+  .main-content {
+    flex-direction: column;
+    gap: 12px;
+    max-width: none;
+  }
+  
+  .left-toolbar,
+  .right-toolbar {
+    width: 100%;
+    max-width: 100%;
+    position: static;
+    top: auto;
+    align-self: auto;
+    margin: 0;
+  }
+  
+  .left-toolbar::after,
+  .right-toolbar::before {
+    display: none;
+  }
+  
+  .toolbar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-height: none;
+    overflow-y: visible;
+  }
+  
+  .toolbar-group {
+    flex-direction: row;
+    align-items: center;
+    border-bottom: none;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 0 12px;
+  }
+  
+  .toolbar-group:last-child {
+    border-right: none;
+  }
+  
+  .team-selector {
+    flex-direction: row;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .App {
+    padding: 8px;
+  }
+  
+
+  
+  .App-header {
+    margin-bottom: 8px;
+  }
+  
+  h1 {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    margin-bottom: 2px;
+  }
+  
+  h1::after {
+    width: 40px;
+    height: 2px;
+    margin: 4px auto;
+  }
+  
+  .main-content {
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 4px;
+    max-width: none;
+  }
+  
+  .left-toolbar,
+  .right-toolbar {
+    width: 100%;
+    max-width: 100%;
+    position: static;
+    top: auto;
+    align-self: auto;
+    margin: 0;
+  }
+  
+  .left-toolbar::after,
+  .right-toolbar::before {
+    display: none;
+  }
+  
+  .toolbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+  
+  .toolbar-group {
+    flex-direction: column;
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 8px 0;
+  }
+  
+  .toolbar-group:last-child {
+    border-bottom: none;
+  }
+  
+  button {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+  
+  .team-selector {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .team-button {
+    min-width: 120px;
+    padding: 8px 12px;
+  }
+  
+  .team-icon {
+    font-size: 16px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .team-name {
+    font-size: 0.8rem;
+  }
+  
+  canvas {
+    max-width: 98vw;
+    max-height: 65vh;
+    border-radius: 12px;
+  }
+}
+/* 
+Mode buttons grid layout */
+.toolbar-group:has(span:contains("Mode")) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.toolbar-group:has(span:contains("Mode")) span {
+  grid-column: 1;
+  margin-bottom: 8px;
+}
+
+.toolbar-group:has(span:contains("Mode")) button {
+  width: 100%;
+  justify-self: stretch;
+}
+
+/* Formation buttons grid layout */
+.toolbar-group:has(span:contains("Formations")) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.toolbar-group:has(span:contains("Formations")) span {
+  grid-column: 1;
+  margin-bottom: 8px;
+}
+
+.toolbar-group:has(span:contains("Formations")) button {
+  width: 100%;
+  justify-self: stretch;
+}
+
+/* File buttons grid layout */
+.toolbar-group:has(span:contains("File")) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.toolbar-group:has(span:contains("File")) span {
+  grid-column: 1;
+  margin-bottom: 8px;
+}
+
+.toolbar-group:has(span:contains("File")) button {
+  width: 100%;
+  justify-self: stretch;
+}
+
+/* Clear buttons grid layout */
+.toolbar-group:has(span:contains("Clear")) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.toolbar-group:has(span:contains("Clear")) span {
+  grid-column: 1;
+  margin-bottom: 8px;
+}
+
+.toolbar-group:has(span:contains("Clear")) button {
+  width: 100%;
+  justify-self: stretch;
+}/*
+ Vertical toolbar button layouts */
+.mode-group button,
+.formation-group button,
+.file-group button,
+.clear-group button {
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.mode-group button:last-child,
+.formation-group button:last-child,
+.file-group button:last-child,
+.clear-group button:last-child {
+  margin-bottom: 0;
+}/* Vi
+sual connection between toolbars and field */
+.left-toolbar::after,
+.right-toolbar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 8px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+  transform: translateY(-50%);
+  z-index: 5;
+}
+
+.left-toolbar::after {
+  right: -12px;
+}
+
+.right-toolbar::before {
+  left: -12px;
+}
+
+/* Enhanced sticky behavior */
+.left-toolbar.sticky,
+.right-toolbar.sticky {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.98);
+}
+
+/* Smooth transitions for sticky state */
+.left-toolbar,
+.right-toolbar {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}/*
+ Tooltip styles */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.95);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  max-width: 280px;
+  width: max-content;
+  line-height: 1.4;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.9);
+}
+
+/* Tooltip hover behavior is now handled by JavaScript */
+
+/* Make section titles hoverable */
+.toolbar-group span {
+  cursor: help;
+  transition: color 0.2s ease;
+}
+
+.toolbar-group span:hover {
+  color: #667eea;
+}/* File
+ menu buttons - blue styling */
+.file-group button {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4) !important;
+}
+
+.file-group button:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6) !important;
+}
+
+.file-group button.active {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%) !important;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.5) !important;
+}
+
+.file-group button.active:hover {
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%) !important;
+  box-shadow: 0 8px 25px rgba(29, 78, 216, 0.7) !important;
+}
+
+/* File menu selects - blue styling */
+.file-group .template-select {
+  border: 2px solid #3b82f6;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1d4ed8;
+}
+
+.file-group .template-select:hover {
+  background: linear-gradient(135deg, #bfdbfe 0%, #93c5fd 100%);
+  border-color: #2563eb;
+  color: #1e40af;
+}
+
+.file-group .template-select:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* AdSense Styles */
+.adsense-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.header-with-ads {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 8px; /* Match main-content padding */
+  position: relative;
+}
+
+.header-right-ad {
+  width: 728px !important; /* Force Standard Leaderboard banner width */
+  height: 90px !important; /* Force Standard Leaderboard banner height */
+  flex-shrink: 0;
+  position: absolute;
+  right: calc(50% - 600px); /* Align with right edge of soccer field (1200px field / 2 = 600px from center) */
+  top: 0;
+}
+
+.header-right-ad .adsense-container {
+  width: 728px !important;
+  height: 90px !important;
+  min-width: 728px !important;
+  min-height: 90px !important;
+  max-width: 728px !important;
+  max-height: 90px !important;
+}
+
+.header-right-ad .adsbygoogle {
+  width: 728px !important;
+  height: 90px !important;
+  min-width: 728px !important;
+  min-height: 90px !important;
+  max-width: 728px !important;
+  max-height: 90px !important;
+}
+
+.header-with-ads h1 {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 4px; /* Keep the original bottom margin for the underline */
+  flex-shrink: 0;
+}
+
+/* Responsive ad adjustments */
+@media (max-width: 1200px) {
+  .header-right-ad {
+    right: calc(50% - 50vw + 200px + 600px - 728px); /* Adjust for smaller screens where field is responsive */
+  }
+}
+
+@media (max-width: 1600px) {
+  .header-right-ad {
+    right: calc(50% - 600px + 8px); /* Small adjustment for medium screens */
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-with-ads {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 0 10px;
+  }
+  
+  .header-with-ads h1 {
+    text-align: center;
+    margin-right: 0;
+  }
+  
+  .header-right-ad {
+    position: static; /* Remove absolute positioning on tablet */
+    width: 728px; /* Keep leaderboard size on tablet */
+    height: 90px; /* Keep leaderboard height on tablet */
+    right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-with-ads {
+    gap: 10px;
+    padding: 0 5px;
+  }
+  
+  .header-right-ad {
+    width: 320px; /* Mobile Banner size */
+    height: 50px; /* Mobile Banner height */
+  }
+  
+  .adsense-container {
+    padding: 4px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-right-ad {
+    width: 300px; /* Compact mobile banner */
+    height: 50px; /* Standard mobile height */
+  }
+}/* He
+ader with ads layout */
+.header-with-ads {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 8px; /* Match main-content padding */
+  position: relative;
+}
+
+.header-with-ads h1 {
+  text-align: left;
+  margin: 0;
+  margin-bottom: 4px; /* Keep the original bottom margin for the underline */
+  margin-left: calc(50% - 600px); /* Align with left edge of soccer field (1200px field / 2 = 600px from center) */
+  flex-shrink: 0;
+}
+
+.header-with-ads h1::after {
+  margin: 8px 0; /* Remove auto centering, align to left */
+}
+
+.header-right-ad {
+  width: 728px !important; /* Force Standard Leaderboard banner width */
+  height: 90px !important; /* Force Standard Leaderboard banner height */
+  flex-shrink: 0;
+  position: absolute;
+  right: calc(50% - 600px); /* Align with right edge of soccer field (1200px field / 2 = 600px from center) */
+  top: 0;
+}
+
+.header-right-ad .adsense-container {
+  width: 728px !important;
+  height: 90px !important;
+  min-width: 728px !important;
+  min-height: 90px !important;
+  max-width: 728px !important;
+  max-height: 90px !important;
+}
+
+.header-right-ad .adsbygoogle {
+  width: 728px !important;
+  height: 90px !important;
+  min-width: 728px !important;
+  min-height: 90px !important;
+  max-width: 728px !important;
+  max-height: 90px !important;
+}
+
+/* AdSense container styles */
+.adsense-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* Responsive ad adjustments */
+@media (max-width: 1600px) {
+  .header-right-ad {
+    right: calc(50% - 600px + 8px); /* Small adjustment for medium screens */
+  }
+  
+  .header-with-ads h1 {
+    margin-left: calc(50% - 600px + 8px); /* Adjust title alignment for medium screens */
+  }
+}
+
+@media (max-width: 1200px) {
+  .header-right-ad {
+    right: calc(50% - 50vw + 200px + 600px - 728px); /* Adjust for smaller screens where field is responsive */
+  }
+  
+  .header-with-ads h1 {
+    margin-left: calc(50% - 50vw + 200px); /* Adjust title alignment for smaller screens */
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-with-ads {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 0 10px;
+  }
+  
+  .header-with-ads h1 {
+    text-align: center;
+    margin-left: 0;
+  }
+  
+  .header-with-ads h1::after {
+    margin: 8px auto; /* Re-center the underline on mobile */
+  }
+  
+  .header-right-ad {
+    position: static; /* Remove absolute positioning on tablet */
+    width: 728px; /* Keep leaderboard size on tablet */
+    height: 90px; /* Keep leaderboard height on tablet */
+    right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-with-ads {
+    gap: 10px;
+    padding: 0 5px;
+  }
+  
+  .header-right-ad {
+    width: 320px; /* Mobile Banner size */
+    height: 50px; /* Mobile Banner height */
+  }
+  
+  .adsense-container {
+    padding: 4px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-right-ad {
+    width: 300px; /* Compact mobile banner */
+    height: 50px; /* Standard mobile height */
+  }
+}/* H
+eader with ads layout */
+.header-with-ads {
+  display: flex;
+  align-items: flex-end; /* Align items to bottom */
+  justify-content: flex-start;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 8px; /* Match main-content padding */
+  position: relative;
+  min-height: 90px; /* Ensure container is at least as tall as the ad */
+}
+
+.header-with-ads h1 {
+  text-align: left;
+  margin: 0;
+  margin-bottom: 4px; /* Keep the original bottom margin for the underline */
+  margin-left: calc(50% - 600px); /* Align with left edge of soccer field (1200px field / 2 = 600px from center) */
+  flex-shrink: 0;
+  align-self: flex-end; /* Align title to bottom of container */
+}
+
+.header-with-ads h1::after {
+  margin: 8px 0; /* Remove auto centering, align to left */
+}
+
+.header-right-ad {
+  width: 728px !important; /* Force Standard Leaderboard banner width */
+  height: 90px !important; /* Force Standard Leaderboard banner height */
+  flex-shrink: 0;
+  position: absolute;
+  right: calc(50% - 600px); /* Align with right edge of soccer field (1200px field / 2 = 600px from center) */
+  bottom: 0; /* Align to bottom of container */
+}
+
+.header-right-ad .adsense-container {
+  width: 728px !important;
+  height: 90px !important;
+  min-width: 728px !important;
+  min-height: 90px !important;
+  max-width: 728px !important;
+  max-height: 90px !important;
+}
+
+.header-right-ad .adsbygoogle {
+  width: 728px !important;
+  height: 90px !important;
+  min-width: 728px !important;
+  min-height: 90px !important;
+  max-width: 728px !important;
+  max-height: 90px !important;
+}
+
+/* AdSense container styles */
+.adsense-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* Responsive ad adjustments */
+@media (max-width: 1600px) {
+  .header-right-ad {
+    right: calc(50% - 600px + 8px); /* Small adjustment for medium screens */
+  }
+  
+  .header-with-ads h1 {
+    margin-left: calc(50% - 600px + 8px); /* Adjust title alignment for medium screens */
+  }
+}
+
+@media (max-width: 1200px) {
+  .header-right-ad {
+    right: calc(50% - 50vw + 200px + 600px - 728px); /* Adjust for smaller screens where field is responsive */
+  }
+  
+  .header-with-ads h1 {
+    margin-left: calc(50% - 50vw + 200px); /* Adjust title alignment for smaller screens */
+  }
+}
+
+@media (max-width: 1024px) {
+  .header-with-ads {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 0 10px;
+    min-height: auto; /* Remove min-height on mobile */
+  }
+  
+  .header-with-ads h1 {
+    text-align: center;
+    margin-left: 0;
+    align-self: center; /* Center align on mobile */
+  }
+  
+  .header-with-ads h1::after {
+    margin: 8px auto; /* Re-center the underline on mobile */
+  }
+  
+  .header-right-ad {
+    position: static; /* Remove absolute positioning on tablet */
+    width: 728px; /* Keep leaderboard size on tablet */
+    height: 90px; /* Keep leaderboard height on tablet */
+    right: auto;
+    bottom: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-with-ads {
+    gap: 10px;
+    padding: 0 5px;
+  }
+  
+  .header-right-ad {
+    width: 320px; /* Mobile Banner size */
+    height: 50px; /* Mobile Banner height */
+  }
+  
+  .adsense-container {
+    padding: 4px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-right-ad {
+    width: 300px; /* Compact mobile banner */
+    height: 50px; /* Standard mobile height */
   }
 }

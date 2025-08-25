@@ -26,6 +26,8 @@ const SoccerField = ({
   const [editingPlayer, setEditingPlayer] = useState(null);
   const [lastClickTime, setLastClickTime] = useState(0);
   const [lastClickedPlayer, setLastClickedPlayer] = useState(null);
+  const [canvasSize, setCanvasSize] = useState({ width: 1200, height: 780 });
+  const [scale, setScale] = useState(1);
 
 
   const drawField = (context, canvas) => {
@@ -339,11 +341,85 @@ const SoccerField = ({
     return distance <= threshold;
   };
 
+  // Handle responsive canvas sizing
+  useEffect(() => {
+    let resizeTimeout;
+    
+    const updateCanvasSize = () => {
+      if (!containerRef.current) return;
+      
+      // Get available space considering toolbars
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      
+      let availableWidth, availableHeight;
+      
+      if (viewportWidth <= 768) {
+        // Mobile: full width minus padding
+        availableWidth = viewportWidth - 16; // Account for padding
+        availableHeight = viewportHeight * 0.5; // 50% of viewport height
+      } else if (viewportWidth <= 1024) {
+        // Tablet: full width minus padding
+        availableWidth = viewportWidth - 32; // Account for padding
+        availableHeight = viewportHeight * 0.6; // 60% of viewport height
+      } else {
+        // Desktop: account for toolbars (280px each + margins)
+        availableWidth = viewportWidth - 600; // 280*2 + margins
+        availableHeight = viewportHeight * 0.8; // 80% of viewport height
+      }
+      
+      // Maintain aspect ratio (1200:780 ≈ 1.54:1)
+      const aspectRatio = 1200 / 780;
+      
+      let newWidth = Math.min(availableWidth, 1200);
+      let newHeight = newWidth / aspectRatio;
+      
+      if (newHeight > availableHeight) {
+        newHeight = availableHeight;
+        newWidth = newHeight * aspectRatio;
+      }
+      
+      // Ensure minimum size
+      newWidth = Math.max(newWidth, 280);
+      newHeight = Math.max(newHeight, 182);
+      
+      const newScale = newWidth / 1200;
+      
+      setCanvasSize({ width: newWidth, height: newHeight });
+      setScale(newScale);
+    };
+    
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateCanvasSize, 100);
+    };
+    
+    updateCanvasSize();
+    window.addEventListener('resize', debouncedResize);
+    window.addEventListener('orientationchange', updateCanvasSize);
+    
+    return () => {
+      window.removeEventListener('resize', debouncedResize);
+      window.removeEventListener('orientationchange', updateCanvasSize);
+      clearTimeout(resizeTimeout);
+    };
+  }, []);
+
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
+    
     const context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    drawField(context, canvas);
+    
+    // Set actual canvas size
+    canvas.width = canvasSize.width;
+    canvas.height = canvasSize.height;
+    
+    // Scale the context to maintain field proportions
+    context.scale(scale, scale);
+    
+    context.clearRect(0, 0, 1200, 780); // Clear using original dimensions
+    drawField(context, { width: 1200, height: 780 }); // Draw using original dimensions
     lines.forEach(line => drawLine(context, line));
     if (currentLine) {
       drawLine(context, currentLine);
@@ -352,15 +428,26 @@ const SoccerField = ({
     if (ball) {
       drawBall(context, ball);
     }
-  }, [players, lines, currentLine, ball]);
+  }, [players, lines, currentLine, ball, canvasSize, scale]);
 
-  const handleMouseDown = (e) => {
+  // Helper function to get mouse coordinates accounting for scaling
+  const getMouseCoordinates = (e) => {
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const mouseX = (e.clientX - rect.left) * scaleX;
-    const mouseY = (e.clientY - rect.top) * scaleY;
+    
+    // Get mouse position relative to canvas
+    const clientX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
+    const clientY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
+    
+    const mouseX = ((clientX - rect.left) / rect.width) * 1200; // Scale to original canvas size
+    const mouseY = ((clientY - rect.top) / rect.height) * 780;
+    
+    return { mouseX, mouseY };
+  };
+
+  const handleMouseDown = (e) => {
+    e.preventDefault(); // Prevent default touch behaviors
+    const { mouseX, mouseY } = getMouseCoordinates(e);
 
     // Handle right-click (button 2) for deletion
     if (e.button === 2) {
@@ -485,25 +572,16 @@ const SoccerField = ({
   };
 
   const handleMouseMove = (e) => {
+    e.preventDefault(); // Prevent default touch behaviors
+    const { mouseX, mouseY } = getMouseCoordinates(e);
+    
     if ((mode === 'draw' || mode === 'movement' || mode === 'pass') && isDrawing) {
-      const canvas = canvasRef.current;
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const mouseX = (e.clientX - rect.left) * scaleX;
-      const mouseY = (e.clientY - rect.top) * scaleY;
       setCurrentLine(prevLine => ({ ...prevLine, endX: mouseX, endY: mouseY }));
       return;
     }
 
     if (!draggingPlayer && !draggingBall && !draggingLine) return;
 
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const mouseX = (e.clientX - rect.left) * scaleX;
-    const mouseY = (e.clientY - rect.top) * scaleY;
     const newX = mouseX - dragOffset.x;
     const newY = mouseY - dragOffset.y;
 
@@ -537,12 +615,8 @@ const SoccerField = ({
   };
 
   const handleMouseUp = (e) => {
-    const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const mouseX = (e.clientX - rect.left) * scaleX;
-    const mouseY = (e.clientY - rect.top) * scaleY;
+    e.preventDefault(); // Prevent default touch behaviors
+    const { mouseX, mouseY } = getMouseCoordinates(e);
 
     // Only process mouse up events for left clicks
     if (mouseDownButton !== 0) {
@@ -556,8 +630,8 @@ const SoccerField = ({
       setCurrentLine(null);
       setMode('normal');
     } else if (mode === 'normal' && !draggingPlayer && !draggingBall && !draggingLine) {
-      // Only add a player if the mouse is inside the canvas
-      if (mouseX >= 0 && mouseX <= canvas.width && mouseY >= 0 && mouseY <= canvas.height) {
+      // Only add a player if the mouse is inside the canvas (using original dimensions)
+      if (mouseX >= 0 && mouseX <= 1200 && mouseY >= 0 && mouseY <= 780) {
         addPlayer(mouseX, mouseY);
       }
     }
@@ -608,19 +682,27 @@ const SoccerField = ({
       style={{ 
         overflow: 'hidden', 
         borderRadius: '20px',
-        position: 'relative'
+        position: 'relative',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
       }}
     >
       <canvas
         ref={canvasRef}
-        width={1200}
-        height={780}
         style={{ 
-          cursor: getCursor()
+          cursor: getCursor(),
+          maxWidth: '100%',
+          height: 'auto',
+          touchAction: 'none' // Prevent default touch behaviors
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleMouseMove}
+        onTouchEnd={handleMouseUp}
         onContextMenu={handleContextMenu}
       />
     </div>

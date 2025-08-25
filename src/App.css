@@ -582,21 +582,26 @@ canvas {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(0, 0, 0, 0.15);
   border: 3px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 1200px;
-  height: 780px;
-  max-width: calc(100vw - 600px);
-  max-height: 80vh;
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 canvas:hover {
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35), 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Add responsive design */
+/* Tablet and smaller desktop screens */
 @media (max-width: 1200px) {
-  canvas {
-    max-width: calc(100vw - 400px);
-    max-height: 70vh;
+  .main-content {
+    padding: 0 16px;
+  }
+  
+  .left-toolbar,
+  .right-toolbar {
+    width: 260px;
+    max-width: 260px;
+    min-width: 260px;
   }
 }
 
@@ -605,6 +610,7 @@ canvas:hover {
     flex-direction: column;
     gap: 12px;
     max-width: none;
+    padding: 0 8px;
   }
   
   .left-toolbar,
@@ -628,6 +634,7 @@ canvas:hover {
     justify-content: center;
     max-height: none;
     overflow-y: visible;
+    padding: 12px;
   }
   
   .toolbar-group {
@@ -636,6 +643,7 @@ canvas:hover {
     border-bottom: none;
     border-right: 1px solid rgba(0, 0, 0, 0.08);
     padding: 0 12px;
+    margin: 4px 0;
   }
   
   .toolbar-group:last-child {
@@ -646,14 +654,36 @@ canvas:hover {
     flex-direction: row;
     gap: 8px;
   }
+  
+  .soccer-field-container {
+    order: -1; /* Move field above toolbars on tablet */
+  }
+}
+
+/* Small tablets */
+@media (max-width: 900px) {
+  .toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .toolbar-group {
+    flex-direction: column;
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 8px 0;
+    margin: 0;
+  }
+  
+  .toolbar-group:last-child {
+    border-bottom: none;
+  }
 }
 
 @media (max-width: 768px) {
   .App {
     padding: 8px;
   }
-  
-
   
   .App-header {
     margin-bottom: 8px;
@@ -736,9 +766,12 @@ canvas:hover {
   }
   
   canvas {
-    max-width: 98vw;
-    max-height: 65vh;
     border-radius: 12px;
+  }
+  
+  .soccer-field-container {
+    width: 100%;
+    padding: 0;
   }
 }
 /* 
@@ -1328,4 +1361,227 @@ eader with ads layout */
     width: 300px; /* Compact mobile banner */
     height: 50px; /* Standard mobile height */
   }
+}
+/* Enhan
+ced mobile responsiveness */
+@media (max-width: 480px) {
+  .App {
+    padding: 4px;
+  }
+  
+  .main-content {
+    padding: 0 2px;
+    gap: 6px;
+  }
+  
+  .toolbar {
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .toolbar-group {
+    padding: 6px 0;
+  }
+  
+  button {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    min-height: 32px;
+  }
+  
+  .team-button {
+    padding: 6px 10px;
+    min-width: 100px;
+  }
+  
+  .team-name {
+    font-size: 0.75rem;
+  }
+  
+  h1 {
+    font-size: clamp(1rem, 5vw, 1.5rem);
+  }
+}
+
+/* Very small screens */
+@media (max-width: 360px) {
+  .App {
+    padding: 2px;
+  }
+  
+  .main-content {
+    padding: 0;
+    gap: 4px;
+  }
+  
+  .toolbar {
+    padding: 6px;
+    border-radius: 12px;
+  }
+  
+  button {
+    padding: 3px 6px;
+    font-size: 0.65rem;
+    min-height: 28px;
+  }
+  
+  .team-button {
+    padding: 4px 8px;
+    min-width: 80px;
+  }
+  
+  canvas {
+    border-radius: 8px;
+  }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .main-content {
+    flex-direction: row;
+    gap: 8px;
+  }
+  
+  .left-toolbar,
+  .right-toolbar {
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+    position: static;
+  }
+  
+  .toolbar {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .toolbar-group {
+    flex-direction: column;
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 6px 0;
+  }
+  
+  .soccer-field-container {
+    flex: 1;
+    order: 0;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  canvas {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Hover states for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  button:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+  
+  .team-button:hover {
+    transform: none;
+    opacity: 0.9;
+  }
+  
+  canvas:hover {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+}/
+* Footer Styles */
+.app-footer {
+  margin-top: auto;
+  padding: 20px 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer-content p {
+  color: rgba(255, 255, 255, 0.9);
+  margin: 8px 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.footer-keywords {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-keywords span {
+  display: inline-block;
+  margin: 0 4px;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+
+.footer-keywords span:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+  .app-footer {
+    padding: 15px 0;
+  }
+  
+  .footer-content {
+    padding: 0 15px;
+  }
+  
+  .footer-content p {
+    font-size: 0.8rem;
+  }
+  
+  .footer-keywords {
+    font-size: 0.75rem;
+  }
+  
+  .footer-keywords span {
+    margin: 2px;
+    padding: 1px 6px;
+  }
+}
+
+/* SEO Content - Hidden but accessible to search engines */
+.seo-content {
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  white-space: nowrap !important;
+}
+
+.seo-content h2,
+.seo-content h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.seo-content p,
+.seo-content li {
+  font-size: 0.9rem;
+  margin: 0;
 }

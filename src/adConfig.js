@@ -2,8 +2,8 @@
 // Replace these with your actual AdSense publisher ID and ad unit IDs
 
 export const AD_CONFIG = {
-  // Your AdSense Publisher ID (replace XXXXXXXXXXXXXXXXX with your actual ID)
-  publisherId: 'ca-pub-XXXXXXXXXXXXXXXXX',
+  // Your AdSense Publisher ID
+  publisherId: 'ca-pub-3503229357829899',
   
   // Ad Unit IDs (replace XXXXXXXXXX with your actual ad unit IDs)
   adUnits: {

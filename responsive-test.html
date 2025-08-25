@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Soccer Strategy Board - Responsive Test</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .field-container {
+            background: linear-gradient(135deg, #2dd4bf 0%, #059669 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 1200px;
+            aspect-ratio: 1200 / 780;
+            position: relative;
+        }
+        
+        .responsive-info {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        /* Responsive breakpoints */
+        @media (max-width: 1200px) {
+            .field-container {
+                max-width: calc(100vw - 40px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            .field-container {
+                border-radius: 12px;
+                max-width: calc(100vw - 20px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 5px;
+            }
+            .field-container {
+                border-radius: 8px;
+                max-width: calc(100vw - 10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: white; text-align: center;">Soccer Strategy Board - Responsive Test</h1>
+        
+        <div class="responsive-info">
+            <h3>Current Screen Info:</h3>
+            <p>Screen Width: <span id="screenWidth"></span>px</p>
+            <p>Screen Height: <span id="screenHeight"></span>px</p>
+            <p>Viewport Width: <span id="viewportWidth"></span>px</p>
+            <p>Viewport Height: <span id="viewportHeight"></span>px</p>
+            <p>Device Pixel Ratio: <span id="pixelRatio"></span></p>
+            <p>Orientation: <span id="orientation"></span></p>
+        </div>
+        
+        <div class="field-container">
+            <!-- This represents the soccer field -->
+        </div>
+        
+        <div class="responsive-info">
+            <h3>Responsive Breakpoints:</h3>
+            <ul style="text-align: left; display: inline-block;">
+                <li><strong>Desktop:</strong> > 1024px - Side toolbars, full field size</li>
+                <li><strong>Tablet:</strong> 768px - 1024px - Stacked layout, medium field</li>
+                <li><strong>Mobile:</strong> 480px - 768px - Compact layout, small field</li>
+                <li><strong>Small Mobile:</strong> < 480px - Minimal layout, tiny field</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        function updateScreenInfo() {
+            document.getElementById('screenWidth').textContent = screen.width;
+            document.getElementById('screenHeight').textContent = screen.height;
+            document.getElementById('viewportWidth').textContent = window.innerWidth;
+            document.getElementById('viewportHeight').textContent = window.innerHeight;
+            document.getElementById('pixelRatio').textContent = window.devicePixelRatio;
+            document.getElementById('orientation').textContent = window.innerWidth > window.innerHeight ? 'Landscape' : 'Portrait';
+        }
+        
+        updateScreenInfo();
+        window.addEventListener('resize', updateScreenInfo);
+        window.addEventListener('orientationchange', () => {
+            setTimeout(updateScreenInfo, 100);
+        });
+    </script>
+</body>
+</html>

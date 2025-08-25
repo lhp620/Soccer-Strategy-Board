@@ -240,6 +240,39 @@ function App() {
 
   return (
     <div className="App">
+      {/* SEO-friendly hidden content for search engines */}
+      <div className="seo-content" style={{ position: 'absolute', left: '-9999px', top: '-9999px' }}>
+        <h2>Free Soccer Strategy Board - Football Tactics Tool</h2>
+        <p>Create professional soccer formations and tactical plays with our interactive strategy board. Perfect for football coaches, players, and enthusiasts who want to visualize and plan their game strategies.</p>
+        
+        <h3>Popular Soccer Formations</h3>
+        <ul>
+          <li>4-4-2 Formation - Classic balanced formation with four defenders, four midfielders, and two strikers</li>
+          <li>4-3-3 Formation - Attacking formation with wingers and central striker</li>
+          <li>3-5-2 Formation - Defensive formation with wing-backs and two central strikers</li>
+        </ul>
+        
+        <h3>Features</h3>
+        <ul>
+          <li>Interactive soccer field with drag-and-drop players</li>
+          <li>Draw tactical lines and player movements</li>
+          <li>Save and load custom formations</li>
+          <li>Mobile-friendly responsive design</li>
+          <li>Free to use - no registration required</li>
+        </ul>
+        
+        <h3>How to Use</h3>
+        <p>Select a team (home or away), choose a formation, and start placing players on the field. Use the drawing tools to create tactical lines, player movements, and passing routes. Save your strategies for future use.</p>
+        
+        <h3>Perfect for</h3>
+        <ul>
+          <li>Soccer coaches planning team tactics</li>
+          <li>Football players studying formations</li>
+          <li>Sports analysts creating visual presentations</li>
+          <li>Youth soccer training and education</li>
+        </ul>
+      </div>
+
       <header className="App-header">
         <div className="header-with-ads">
           <h1>Soccer Strategy Board</h1>
@@ -317,6 +350,16 @@ function App() {
         onChange={handleLoad}
         accept=".json"
       />
+      
+      <footer className="app-footer">
+        <div className="footer-content">
+          <p>© 2025 Soccer Strategy Board - Free Online Football Tactics Tool</p>
+          <p>Create professional soccer formations, draw tactical plays, and plan your team's strategy with our interactive football coaching tool.</p>
+          <div className="footer-keywords">
+            <span>Soccer Strategy</span> • <span>Football Tactics</span> • <span>Coaching Tool</span> • <span>Team Formations</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

@@ -774,8 +774,7 @@ canvas:hover {
     padding: 0;
   }
 }
-/* 
-Mode buttons grid layout */
+/* Mode buttons grid layout */
 .toolbar-group:has(span:contains("Mode")) {
   display: grid;
   grid-template-columns: 1fr;
@@ -841,8 +840,9 @@ Mode buttons grid layout */
 .toolbar-group:has(span:contains("Clear")) button {
   width: 100%;
   justify-self: stretch;
-}/*
- Vertical toolbar button layouts */
+}
+
+/* Vertical toolbar button layouts */
 .mode-group button,
 .formation-group button,
 .file-group button,
@@ -856,8 +856,9 @@ Mode buttons grid layout */
 .file-group button:last-child,
 .clear-group button:last-child {
   margin-bottom: 0;
-}/* Vi
-sual connection between toolbars and field */
+}
+
+/* Visual connection between toolbars and field */
 .left-toolbar::after,
 .right-toolbar::before {
   content: '';
@@ -889,8 +890,9 @@ sual connection between toolbars and field */
 .left-toolbar,
 .right-toolbar {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}/*
- Tooltip styles */
+}
+
+/* Tooltip styles */
 .tooltip-container {
   position: relative;
   display: inline-block;
@@ -938,8 +940,9 @@ sual connection between toolbars and field */
 
 .toolbar-group span:hover {
   color: #667eea;
-}/* File
- menu buttons - blue styling */
+}
+
+/* File menu buttons - blue styling */
 .file-group button {
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
   color: white !important;
@@ -1092,8 +1095,9 @@ sual connection between toolbars and field */
     width: 300px; /* Compact mobile banner */
     height: 50px; /* Standard mobile height */
   }
-}/* He
-ader with ads layout */
+}
+
+/* Header with ads layout */
 .header-with-ads {
   display: flex;
   align-items: flex-start;
@@ -1494,8 +1498,9 @@ ced mobile responsiveness */
   canvas:hover {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 8px 20px rgba(0, 0, 0, 0.15);
   }
-}/
-* Footer Styles */
+}
+
+/* Footer Styles */
 .app-footer {
   margin-top: auto;
   padding: 20px 0;
